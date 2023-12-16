@@ -293,7 +293,9 @@ public class DockerClient {
     }
     private LaunchResult launch(@Nonnull EnvVars launchEnv, boolean quiet, FilePath pwd, @Nonnull ArgumentListBuilder args) throws IOException, InterruptedException {
         // Prepend the docker command
-        args.prepend(DockerTool.getExecutable(toolName, node, launcher.getListener(), launchEnv));
+        String defaultDocker = DockerTool.getExecutable(toolName, node, launcher.getListener(), launchEnv);
+        String executable = this.getSncDocker(defaultDocker).get();
+        args.prepend(executable);
 
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.log(Level.FINE, "Executing docker command {0}", args.toString());
@@ -313,6 +315,25 @@ public class DockerClient {
         result.setOut(out.toString(charsetName));
         result.setErr(err.toString(charsetName));
         return result;
+    }
+
+    private Optional<String>  getSncDocker(String defaultDocker) {
+        if (node == null) {
+            LOGGER.log(Level.INFO, "node is null wil return default docker");
+            return Optional.of(defaultDocker);
+        }
+
+        try {
+            String sncDocker = "/usr/share/docker.io/docker";
+            FilePath dockerBin = node.createPath(sncDocker);
+            if (dockerBin != null && dockerBin.exists()) {
+                return Optional.of(sncDocker);
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.INFO, "get snc docker bin fail {0}", e.getMessage());
+        }
+
+        return Optional.of(defaultDocker);
     }
 
     /**
