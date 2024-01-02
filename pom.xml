@@ -8,28 +8,28 @@
         <relativePath />
     </parent>
     <artifactId>docker-workflow</artifactId>
-    <version>1.26</version>
+    <version>1.26.1</version>
     <name>Docker Pipeline</name>
     <description>Build and use Docker containers from pipelines</description>
     <packaging>hpi</packaging>
-    
+
     <licenses>
       <license>
         <name>MIT License</name>
         <url>https://opensource.org/licenses/MIT</url>
       </license>
     </licenses>
-    
+
     <url>https://github.com/jenkinsci/docker-workflow-plugin</url>
     <scm>
       <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
       <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
       <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
-      <tag>docker-workflow-1.26</tag>
+      <tag>docker-workflow-1.26.1</tag>
     </scm>
 
     <properties>
-        <revision>1.26</revision>
+        <revision>1.26.1</revision>
         <changelist>-SNAPSHOT</changelist>
         <jenkins.version>2.190.3</jenkins.version>
         <java.level>8</java.level>
