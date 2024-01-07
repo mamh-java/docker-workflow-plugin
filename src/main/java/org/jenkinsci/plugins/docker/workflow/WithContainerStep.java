@@ -74,7 +74,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class WithContainerStep extends AbstractStepImpl {
-    
+
     private static final Logger LOGGER = Logger.getLogger(WithContainerStep.class.getName());
     private final @Nonnull String image;
     private String args;
@@ -83,7 +83,7 @@ public class WithContainerStep extends AbstractStepImpl {
     @DataBoundConstructor public WithContainerStep(@Nonnull String image) {
         this.image = image;
     }
-    
+
     public String getImage() {
         return image;
     }
@@ -369,7 +369,10 @@ public class WithContainerStep extends AbstractStepImpl {
                     for (String pair : envHost) {
                         env.addLine(pair);
                     }
-                    return DockerTool.getExecutable(toolName, node, getListener(), env);
+                    String defaultDocker = DockerTool.getExecutable(toolName, node, getListener(), env);
+                    String executable = DockerUtils.getSncDocker(node, defaultDocker);
+                    LOGGER.log(Level.INFO, "get the docker executable {0}", executable);
+                    return executable;
                 }
             };
         }

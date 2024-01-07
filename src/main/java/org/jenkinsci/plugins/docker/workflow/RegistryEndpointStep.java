@@ -52,7 +52,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
 public class RegistryEndpointStep extends Step {
-    
+
     private final @Nonnull DockerRegistryEndpoint registry;
     private @CheckForNull String toolName;
 
@@ -60,7 +60,7 @@ public class RegistryEndpointStep extends Step {
         assert registry != null;
         this.registry = registry;
     }
-    
+
     public DockerRegistryEndpoint getRegistry() {
         return registry;
     }
@@ -91,7 +91,8 @@ public class RegistryEndpointStep extends Step {
         @Override protected KeyMaterialFactory newKeyMaterialFactory() throws IOException, InterruptedException {
             TaskListener listener = getContext().get(TaskListener.class);
             EnvVars envVars = getContext().get(EnvVars.class);
-            String executable = DockerTool.getExecutable(step.toolName, getContext().get(Node.class), listener, envVars);
+            String defaultDocker = DockerTool.getExecutable(step.toolName, getContext().get(Node.class), listener, envVars);
+            String executable = DockerUtils.getSncDocker(getContext().get(Node.class), defaultDocker);
             return step.registry.newKeyMaterialFactory(getContext().get(Run.class), getContext().get(FilePath.class), getContext().get(Launcher.class), envVars, listener, executable);
         }
 

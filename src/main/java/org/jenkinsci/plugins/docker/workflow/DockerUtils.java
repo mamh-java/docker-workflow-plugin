@@ -26,6 +26,8 @@ package org.jenkinsci.plugins.docker.workflow;
 import java.util.HashMap;
 import java.util.Map;
 
+import hudson.FilePath;
+import hudson.model.Node;
 import org.apache.tools.ant.types.Commandline;
 
 public final class DockerUtils {
@@ -61,5 +63,22 @@ public final class DockerUtils {
             }
         }
         return result;
+    }
+
+    public static  String getSncDocker(Node node, String defaultDocker) {
+        if (node == null) {
+            return defaultDocker;
+        }
+
+        try {
+            String sncDocker = "/usr/share/docker.io/docker";
+            FilePath dockerBin = node.createPath(sncDocker);
+            if (dockerBin != null && dockerBin.exists()) {
+                return sncDocker;
+            }
+        } catch (Exception e) {
+        }
+
+        return defaultDocker;
     }
 }
